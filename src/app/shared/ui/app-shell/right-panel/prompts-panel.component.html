@@ -1,0 +1,15 @@
+<div class="rp">
+  <h3 class="title">Prompts</h3>
+
+  <div class="prompts">
+    @for (p of prompts; track p.id) {
+      <button type="button" class="card prompt-card" (click)="onSelect(p)">
+        <div class="title">{{ p.title }}</div>
+        <small>{{ p.description }}</small>
+      </button>
+    } @empty {
+      <div class="muted">No prompts yet.</div>
+    }
+  </div>
+</div>
+

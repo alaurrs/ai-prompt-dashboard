@@ -1,0 +1,32 @@
+:host { display: block; height: 100dvh; }
+
+/* Header (unstyled) */
+.topbar {
+  position: sticky; top: 0; z-index: 10;
+  height: 56px; display: flex; align-items: center;
+  padding: 0 16px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.brand { font-weight: 700; letter-spacing: -.01em; }
+.actions { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+
+/* 3 columns */
+.shell {
+  display: grid;
+  height: calc(100dvh - 56px);
+  grid-template-columns: 280px 1fr 320px;
+  background: var(--bg);
+}
+.shell.no-right { grid-template-columns: 280px 1fr; }
+.left  { border-right: 1px solid var(--border); overflow: auto; }
+.main  { overflow: hidden; display: flex; flex-direction: column; }
+.right { border-left: 1px solid var(--border); overflow: auto; }
+.shell.no-right .right { display: none; }
+
+@media (max-width: 1200px) {
+  .shell { grid-template-columns: 260px 1fr; }
+}
+@media (max-width: 1020px) {
+  .shell { grid-template-columns: 1fr; }
+}

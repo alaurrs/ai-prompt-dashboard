@@ -1,0 +1,26 @@
+<!-- Backdrop (mobile only) -->
+<div class="rp-backdrop" *ngIf="open" (click)="onBackdrop()"></div>
+
+<!-- Panel -->
+<aside class="rp" [class.is-open]="open">
+  <h3 class="rp-title">Prompts</h3>
+
+  <div class="rp-grid">
+    <button type="button" class="card prompt-card" (click)="onBackdrop()">
+      <div class="title">Explain a Concept</div>
+      <small>Explain [concept]…</small>
+    </button>
+    <button type="button" class="card prompt-card" (click)="onBackdrop()">
+      <div class="title">Summarize Text</div>
+      <small>Summarize the following…</small>
+    </button>
+    <button type="button" class="card prompt-card" (click)="onBackdrop()">
+      <div class="title">Translate Language</div>
+      <small>Translate to a chosen language…</small>
+    </button>
+    <button type="button" class="card prompt-card" (click)="onBackdrop()">
+      <div class="title">Write a Function</div>
+      <small>Generate a function from a spec…</small>
+    </button>
+  </div>
+</aside>

@@ -4,13 +4,12 @@
     <p-button
       [styleClass]="'btn btn-ghost'"
       [icon]="theme.icon()"
-      (onClick)="theme.toggle()"
-      [label]="theme.label()"></p-button>
+      (onClick)="theme.toggle()"></p-button>
     <ng-content select="[app-header-actions]"></ng-content>
   </div>
 </p-toolbar>
 
-<div class="shell">
+<div class="shell" [class.no-right]="!rightOpen">
   <aside class="left"><ng-content select="[app-left]"/></aside>
   <main class="main"><ng-content select="[app-center]"/></main>
   <aside class="right"><ng-content select="[app-right]"/></aside>

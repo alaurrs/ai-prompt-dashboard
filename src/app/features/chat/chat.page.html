@@ -1,0 +1,69 @@
+<app-shell [rightOpen]="showPrompts()">
+  <!-- HEADER -->
+  <div app-header-actions>
+  </div>
+
+  <!-- LEFT SIDEBAR -->
+  <div app-left>
+    <app-left-panel
+      [user]="user"
+      [nav]="nav()"
+      [threads]="threadItems()"
+      [selectedThreadId]="active()?.id"
+      (newChat)="newThread()"
+      (openThread)="open($event)"
+      (selectNav)="onSelectNav($event)"
+      (search)="onSearch($event)"/>
+  </div>
+
+  <!-- CENTER COLUMN -->
+  <div app-center class="center-col">
+    <div class="messages">
+      @if (active(); as thread) {
+        @for (message of thread.messages; track message.id) {
+          <div class="bubble" [class.user]="message.role === 'user'" [class.assistant]="message.role === 'assistant'">
+            <p>{{ message.content }}</p>
+          </div>
+        } @empty {
+          <p class="muted">Start chatting...</p>
+        }
+      } @else {
+        <p class="muted">Select or create a conversation.</p>
+      }
+    </div>
+
+    <div class="composer grid gap-2">
+      <textarea
+        pInputTextarea
+        [(ngModel)]="text"
+        rows="1"
+        autoResize
+        class="textarea w-full"
+        placeholder="Type your message..."
+        (keydown.enter)="send()">
+      </textarea>
+
+      <div class="actions">
+        <p-button
+          icon="pi pi-stop"
+          label="Stop"
+          [styleClass]="'btn'"
+          (onClick)="stop()"
+          [disabled]="!busy()">
+        </p-button>
+
+        <p-button
+          icon="pi pi-send"
+          [styleClass]="'btn btn-primary'"
+          (onClick)="send()"
+          [disabled]="busy() || !text.trim()">
+        </p-button>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div app-right class="right-col">
+    <app-right-panel [open]="showPrompts()" (close)="showPrompts.set(false)" />
+  </div>
+</app-shell>
