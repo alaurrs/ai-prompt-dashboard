@@ -1,0 +1,6 @@
+.rounded { border-radius: var(--radius); }
+.rounded-xl { border-radius: var(--radius-xl); }
+.shadow-sm { box-shadow: var(--shadow-sm); }
+.shadow-md { box-shadow: var(--shadow-md); }
+
+.visually-hidden { position:absolute; width:1px; height:1px; margin:-1px; padding:0; white-space:nowrap; border:0; overflow:hidden; clip:rect(0 0 0 0); clip-path:inset(50%); }

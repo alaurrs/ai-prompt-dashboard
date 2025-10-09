@@ -1,0 +1,7 @@
+.checkbox {
+  display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+  input[type="checkbox"] { appearance: none; width: 18px; height: 18px; border: 1px solid var(--border);
+    border-radius: 6px; background: var(--surface); display: grid; place-items: center; }
+  input[type="checkbox"]:checked { background: var(--brand-500); border-color: var(--brand-500); }
+  input[type="checkbox"]:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--ring); }
+}

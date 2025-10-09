@@ -1,0 +1,7 @@
+.dialog {
+  .overlay { background: rgba(0,0,0,.3); }
+  .panel {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius-xl); box-shadow: var(--shadow-md); padding: 16px;
+  }
+}

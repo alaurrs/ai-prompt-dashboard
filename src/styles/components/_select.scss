@@ -1,0 +1,16 @@
+.select {
+  display: inline-flex; align-items: center; gap: 8px;
+  height: 40px; padding: 0 12px; border-radius: var(--radius);
+  border: 1px solid var(--border); background: var(--surface);
+  color: var(--text); cursor: pointer;
+  &:focus-within { box-shadow: 0 0 0 3px var(--ring); border-color: var(--brand-500); }
+}
+.select-panel {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  box-shadow: var(--shadow-md); padding: 6px; overflow: auto;
+}
+.select-option {
+  padding: 8px 10px; border-radius: 8px; cursor: pointer;
+  &:hover { background: var(--surface-2); }
+  &.is-active { background: var(--brand-500); color: var(--text-on-brand); }
+}

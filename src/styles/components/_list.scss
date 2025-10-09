@@ -1,0 +1,41 @@
+.list-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: flex-start;
+  text-align: left;
+
+  padding: 12px 14px;
+  min-height: 48px;
+  border-radius: 14px;
+  background: var(--surface);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background .15s, border-color .15s, transform .02s;
+
+  &:hover { background: var(--surface-2); }
+  &.is-active,
+  &.active {
+    background: #e9eaec;
+    border-color: #d1d5db;
+  }
+
+  .lp-item-icon {
+    font-size: 1.1rem;
+    color: #444;
+    flex-shrink: 0;
+  }
+
+  .lp-item-text {
+    min-width: 0;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .title {
+    font-weight: 500;
+    color: var(--text);
+  }
+}

@@ -1,0 +1,10 @@
+.field { display: grid; gap: 6px; }
+.input, .textarea {
+  background: var(--surface); color: var(--text);
+  border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 10px 12px; outline: none;
+}
+.input:focus, .textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px color-mix(in hsl, var(--primary), transparent 75%);
+}

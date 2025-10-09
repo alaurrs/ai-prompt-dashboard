@@ -1,0 +1,7 @@
+.bubble {
+  @apply max-w-[72ch];
+  padding: 10px 14px; border-radius: var(--radius-lg);
+  background: var(--surface); color: var(--text);
+  border: 1px solid var(--border); box-shadow: var(--elev-1);
+}
+.bubble.user { background: var(--primary); color: white; border-color: transparent; }

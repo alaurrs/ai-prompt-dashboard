@@ -1,0 +1,17 @@
+<p-toolbar class="topbar">
+  <div class="brand">AI Prompt Dashboard</div>
+  <div class="actions">
+    <p-button
+      [styleClass]="'btn btn-ghost'"
+      [icon]="theme.icon()"
+      (onClick)="theme.toggle()"
+      [label]="theme.label()"></p-button>
+    <ng-content select="[app-header-actions]"></ng-content>
+  </div>
+</p-toolbar>
+
+<div class="shell">
+  <aside class="left"><ng-content select="[app-left]"/></aside>
+  <main class="main"><ng-content select="[app-center]"/></main>
+  <aside class="right"><ng-content select="[app-right]"/></aside>
+</div>

@@ -1,0 +1,65 @@
+:root {
+  /* radius / elevation */
+  --radius: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 24px;
+  --elev-1: 0 1px 2px rgba(0,0,0,.06);
+  --elev-2: 0 6px 18px rgba(0,0,0,.12);
+  /* aliases */
+  --shadow-sm: var(--elev-1);
+  --shadow-md: var(--elev-2);
+
+  /* typography */
+  --font-sans: Inter, ui-sans-serif, system-ui, Segoe UI, Roboto, sans-serif;
+  --font-family: var(--font-sans);
+  --fs-xs: 12px; --fs-sm: 14px; --fs: 16px; --fs-lg: 18px; --fs-xl: 20px;
+
+  /* spacing scale */
+  --sp-1: 4px;   /* 0.25rem */
+  --sp-2: 8px;   /* 0.5rem */
+  --sp-3: 12px;  /* 0.75rem */
+  --sp-4: 16px;  /* 1rem */
+  --sp-5: 20px;  /* 1.25rem */
+  --sp-6: 24px;  /* 1.5rem */
+
+  /* light palette */
+  --brand-h: 22;
+  --bg: hsl(0 0% 100%);
+  --surface: hsl(28 30% 97%);
+  --surface-2: color-mix(in hsl, var(--surface), black 4%);
+  --text: hsl(223 16% 12%);
+  --text-strong: hsl(223 32% 10%);
+  --text-muted: hsl(223 10% 45%);
+  --muted: hsl(223 10% 45%);
+  --border: hsl(0 0% 88%);
+
+  --primary: hsl(var(--brand-h) 85% 54%);
+  --primary-600: hsl(var(--brand-h) 82% 46%);
+  --primary-700: hsl(var(--brand-h) 78% 40%);
+  /* brand aliases used in components */
+  --brand-500: var(--primary);
+  --text-on-brand: #fff;
+  --ring: color-mix(in hsl, var(--primary), transparent 75%);
+
+  --success: hsl(142 52% 40%);
+  --warning: hsl(44 92% 50%);
+  --danger:  hsl(0 72% 52%);
+}
+
+:root.app-dark {
+  --bg: hsl(220 18% 9%);
+  --surface: hsl(220 14% 13%);
+  --surface-2: color-mix(in hsl, var(--surface), white 6%);
+  --text: hsl(0 0% 96%);
+  --text-strong: hsl(0 0% 98%);
+  --text-muted: hsl(0 0% 70%);
+  --muted: hsl(0 0% 70%);
+  --border: hsl(0 0% 22%);
+
+  --primary: hsl(var(--brand-h) 85% 60%);
+  --primary-600: hsl(var(--brand-h) 82% 55%);
+  --primary-700: hsl(var(--brand-h) 78% 48%);
+  --brand-500: var(--primary);
+  --ring: color-mix(in hsl, var(--primary), transparent 75%);
+}

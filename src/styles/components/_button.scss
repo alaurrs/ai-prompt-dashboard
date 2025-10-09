@@ -1,0 +1,19 @@
+.btn {
+  @apply inline-flex items-center gap-2 font-semibold select-none;
+  height: 38px; padding: 0 14px;
+  border-radius: var(--radius); border: 1px solid transparent;
+  background: var(--surface); color: var(--text);
+  transition: background .15s, border-color .15s, box-shadow .15s, transform .02s;
+}
+.btn:hover   { background: color-mix(in hsl, var(--surface), black 4%); }
+.btn:active  { transform: translateY(1px); }
+.btn:disabled { opacity: .6; cursor: not-allowed; }
+
+.btn-primary  { background: var(--primary); color: white; }
+.btn-primary:hover  { background: var(--primary-600); }
+.btn-primary:active { background: var(--primary-700); }
+
+.btn-ghost { background: transparent; border-color: var(--border); }
+
+/* Sizes */
+.btn-lg { height: 44px; padding: 0 16px; border-radius: var(--radius-lg); }

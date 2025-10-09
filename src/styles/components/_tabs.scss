@@ -1,0 +1,10 @@
+.tabs {
+  display: grid; gap: 8px;
+  .tablist { display: flex; gap: 8px; border-bottom: 1px solid var(--border); }
+  .tab {
+    padding: 10px 12px; border-radius: 10px; cursor: pointer; color: var(--text-muted);
+    &:hover { background: var(--surface-2); color: var(--text); }
+    &.is-active { color: var(--text-strong); background: var(--surface); border: 1px solid var(--border); }
+  }
+  .panel { padding: 12px 0; }
+}
