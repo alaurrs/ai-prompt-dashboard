@@ -25,7 +25,10 @@
               }
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "src/styles/index.scss",
+              "node_modules/primeicons/primeicons.css",
+              "src/styles/fonts.css"
             ]
           },
           "configurations": {
@@ -82,7 +85,10 @@
               }
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "src/styles/index.scss",
+              "node_modules/primeicons/primeicons.css",
+              "src/styles/fonts.css"
             ]
           }
         }
