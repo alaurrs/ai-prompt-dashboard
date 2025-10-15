@@ -1,5 +1,5 @@
 import {HttpClient, HttpContextToken, HttpErrorResponse, HttpInterceptorFn} from '@angular/common/http';
-import {environment} from '../../../environments/environment.local';
+import {environment} from '../../../environments/environment';
 import {AuthService} from '../services/auth.service';
 import {inject} from '@angular/core';
 import {catchError, firstValueFrom, switchMap, throwError} from 'rxjs';

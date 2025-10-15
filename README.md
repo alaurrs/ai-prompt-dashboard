@@ -28,7 +28,7 @@ Open `http://localhost:4200/` in your browser. The app reloads on changes.
 
 ## Configuration
 
-Edit `src/environment/environment.local.ts` to point the UI to your backend:
+Edit `src/environment/environment.ts` to point the UI to your backend:
 
 ```ts
 export const environment = {
