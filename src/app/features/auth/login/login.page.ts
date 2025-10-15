@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {AuthService} from '../../../core/services/auth.service';
 import {Router} from '@angular/router';
 import {firstValueFrom} from 'rxjs';
-import {environment} from '../../../../environment/environment.local';
+import {environment} from '../../../../environments/environment.local';
 import {FormsModule} from '@angular/forms';
 
 
