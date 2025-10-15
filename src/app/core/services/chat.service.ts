@@ -61,7 +61,7 @@ export class ChatService {
   }
 
   // --------- THREAD COMMANDS ----------
-  async newThread(title = 'New conversation', providerId: ChatThread['providerId'] = 'mock', model = 'o4-mini'): Promise<void> {
+  async newThread(title = 'New conversation', providerId: ChatThread['providerId'] = 'mock', model = 'gpt-5-nano'): Promise<void> {
     const dto = await firstValueFrom(this.threadsApi.create({ title, model }));
     const thread = this.toChatThread(dto!);
     this.threads.set([thread, ...this.threads()]);
@@ -137,7 +137,7 @@ export class ChatService {
         if (!value) continue;
 
         if (value.type === 'created') {
-          assistantServerId = value.data;
+          assistantServerId = value.data ?? null;
         } else if (value.type === 'token') {
           this.mutateMessage(thread.id, assistantLocalId, prev => prev + value.data);
         } else if (value.type === 'done') {
@@ -248,7 +248,7 @@ export class ChatService {
     id: dto.id,
     title: dto.title ?? 'Untitled',
     providerId: 'server',
-    model: dto.model ?? 'o4-mini',
+    model: dto.model ?? 'gpt-5-nano',
     systemPrompt: dto.systemPrompt ?? undefined,
     messages: [],
     createdAt: new Date(dto.createdAt).getTime(),

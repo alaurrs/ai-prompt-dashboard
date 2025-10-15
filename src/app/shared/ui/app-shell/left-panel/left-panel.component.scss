@@ -11,10 +11,8 @@
 .search { position: relative; }
 .search-icon { position: absolute; inset-inline-start: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 0.95rem; }
 input.input { height: 40px; }
-/* Ensure input text/placeholder never overlaps the leading icon */
 .search .input { padding-inline-start: 40px; }
 
-/* Accessible focus for keyboard users */
 .nav-item:focus-visible,
 .thread-item:focus-visible {
   outline: none;

@@ -5,6 +5,12 @@
       [styleClass]="'btn btn-ghost'"
       [icon]="theme.icon()"
       (onClick)="theme.toggle()"></p-button>
+    <p-button
+      [styleClass]="'btn btn-ghost'"
+      [icon]="'pi pi-sign-out'"
+      routerLink="/logout"
+    >
+    </p-button>
     <ng-content select="[app-header-actions]"></ng-content>
   </div>
 </p-toolbar>

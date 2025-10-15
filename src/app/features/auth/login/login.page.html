@@ -1,0 +1,20 @@
+<form class="login-card" (submit)="$event.preventDefault(); submit()">
+  <h1>Connexion</h1>
+
+  <label class="field">
+    <span>Email</span>
+    <input type="email" [ngModel]="email()"  (ngModelChange)="email.set($event)" name="email" required autocomplete="username" />
+  </label>
+
+  <label class="field">
+    <span>Mot de passe</span>
+    <input type="password" [ngModel]="password()" (ngModelChange)="password.set($event)" name="password" required autocomplete="current-password" />
+  </label>
+
+  <button class="btn btn-primary" [disabled]="busy()">Se connecter</button>
+
+  @if (error()) {
+    <p class="error">{{ error() }}</p>
+  }
+
+</form>
