@@ -96,6 +96,13 @@
     border: 1px solid var(--border);
     border-radius: 8px 12px 12px 2px;
   }
+
+  &.loading {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0.8;
+  }
   .error { color:var(--danger); font-size:.85rem; }
 
 }

@@ -23,7 +23,7 @@ export class ChatService {
   );
 
   readonly streaming = signal<boolean>(false);
-
+  readonly waitingFirstChunk = signal<boolean>(false);
   private cancelStreaming: (() => void) | null = null;
 
   private stopFlag = false;
@@ -127,6 +127,8 @@ export class ChatService {
     });
     this.cancelStreaming = cancel;
 
+    let firstChunkReceived = false;
+
     try {
       const reader = stream.getReader();
       let assistantServerId: string | null = null;
@@ -135,6 +137,11 @@ export class ChatService {
         const { value, done } = await reader.read();
         if (done) break;
         if (!value) continue;
+
+        if (!firstChunkReceived) {
+          this.waitingFirstChunk.set(false);
+          firstChunkReceived = true;
+        }
 
         if (value.type === 'created') {
           assistantServerId = value.data ?? null;
@@ -146,6 +153,7 @@ export class ChatService {
         }
       }
     } catch (e: any) {
+      this.waitingFirstChunk.set(false);
       const msg = (e?.data ?? e?.message ?? 'Stream error').toString();
       this.mutateMessage(thread.id, assistantLocalId, prev => prev, msg);
       this.streaming.set(false);
@@ -164,6 +172,8 @@ export class ChatService {
     const trimmed = text.trim();
     if (!trimmed) return;
 
+    this.waitingFirstChunk.set(true);
+
     const clientMessageId = uid();
     const userMsgDto = await firstValueFrom(this.messagesApi.createUser(thread.id, trimmed, clientMessageId));
 
@@ -171,6 +181,7 @@ export class ChatService {
     this.appendMessage(thread.id, userMsg);
 
     await this.streamAssistant(thread, trimmed);
+    this.waitingFirstChunk.set(false);
   }
 
   async retry(): Promise<void> {
@@ -184,6 +195,7 @@ export class ChatService {
   stop(): void {
     if (this.cancelStreaming) this.cancelStreaming();
     this.streaming.set(false);
+    this.waitingFirstChunk.set(false);
   }
 
   // ------- MUTATION HELPERS -------

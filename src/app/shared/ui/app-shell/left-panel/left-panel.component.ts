@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, EventEmitter, inject, Input, Output} from '@angular/core';
 import { NgIf, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Avatar } from 'primeng/avatar';
 import { InputText } from 'primeng/inputtext';
 import { LeftPanelNavItem, LeftPanelNavKey, LeftPanelThreadItem, LeftPanelUser } from './left-panel.types';
+import {UserService} from '../../../../core/services/user.service';
 
 @Component({
   standalone: true,
@@ -14,7 +15,6 @@ import { LeftPanelNavItem, LeftPanelNavKey, LeftPanelThreadItem, LeftPanelUser }
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LeftPanelComponent {
-  @Input() user!: LeftPanelUser;
   @Input() nav: LeftPanelNavItem[] = [];
   @Input() threads: LeftPanelThreadItem[] = [];
   @Input() selectedThreadId?: string;
@@ -23,6 +23,19 @@ export class LeftPanelComponent {
   @Output() newChat = new EventEmitter<void>();
   @Output() openThread = new EventEmitter<string>();
   @Output() search = new EventEmitter<string>();
+
+  private readonly userService = inject(UserService);
+
+  readonly user = computed<LeftPanelUser | null>(() => {
+    const me = this.userService.user();
+    if (!me) return null;
+    return {
+      email: me.email,
+      name: me.displayName,
+      avatarUrl: me.avatarUrl,
+    };
+  });
+
 
   query = '';
 
@@ -34,10 +47,8 @@ export class LeftPanelComponent {
     this.openThread.emit(id);
   }
 
-  // Normalize input event to string value for parent consumers
   onSearchEvent(ev: Event) {
     const value = (ev.target as HTMLInputElement)?.value ?? '';
-    // keep local input state in sync so the text doesn't reset
     this.query = value;
     this.search.emit(value);
   }

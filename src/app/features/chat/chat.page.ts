@@ -10,6 +10,7 @@ import { LeftPanelComponent } from '../../shared/ui/app-shell/left-panel/left-pa
 import { LeftPanelNavItem, LeftPanelThreadItem, LeftPanelUser } from '../../shared/ui/app-shell/left-panel/left-panel.types';
 import { RightPanelComponent } from '../prompts/right-panel/right-panel.component';
 import { Router } from '@angular/router';
+import {AutoScrollDirective} from '../../shared/directives/auto-scroll.directive';
 
 @Component({
   standalone: true,
@@ -24,6 +25,7 @@ import { Router } from '@angular/router';
     FormsModule,
     LeftPanelComponent,
     RightPanelComponent,
+    AutoScrollDirective,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -34,6 +36,7 @@ export class ChatPage {
   readonly threads = this.chat.threads;
   readonly active = this.chat.active;
   readonly busy = this.chat.streaming;
+  readonly isWaitingFirstChunk = this.chat.waitingFirstChunk;
 
   text = '';
   private readonly searchQuery = signal('');
@@ -49,7 +52,6 @@ export class ChatPage {
         key: 'threads',
         label: 'Threads',
         icon: 'pi pi-comments',
-        // Keep Threads highlighted even when Prompts is active
         active: sel === 'threads' || promptsActive,
       },
       {
@@ -86,10 +88,14 @@ export class ChatPage {
   // Right panel (Prompts) state and data
   readonly showPrompts = signal(false);
 
+  readonly isStreaming = computed(() => this.chat.streaming());
+
   newThread() { this.chat.newThread(); }
   open(id: string) { this.chat.open(id); }
   stop() { this.chat.stop(); }
   send() {
+    if (this.busy() || !this.text.trim() || !this.active()) return;
+
     const value = this.text.trim();
     if (!value) return;
     this.chat.sendUserMessage(value);

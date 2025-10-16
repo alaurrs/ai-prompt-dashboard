@@ -1,10 +1,12 @@
-import {HttpClient, HttpContextToken, HttpErrorResponse, HttpInterceptorFn} from '@angular/common/http';
+import {HttpClient, HttpContext, HttpContextToken, HttpErrorResponse, HttpInterceptorFn} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {AuthService} from '../services/auth.service';
 import {inject} from '@angular/core';
-import {catchError, firstValueFrom, switchMap, throwError} from 'rxjs';
+import {catchError, switchMap, throwError, shareReplay, finalize} from 'rxjs';
 
 const RETRIED = new HttpContextToken<boolean>(() => false);
+
+let refreshShared$: import('rxjs').Observable<{ accessToken: string; refreshToken?: string }> | null = null;
 
 export const baseHttpInterceptor: HttpInterceptorFn = (req, next) => {
   const auth = inject(AuthService);
@@ -15,14 +17,27 @@ export const baseHttpInterceptor: HttpInterceptorFn = (req, next) => {
     ? req.url
     : `${apiBase}/${req.url.replace(/^\//, '')}`;
 
+  const isRefresh = url.includes('/auth/refresh');
+
   const access = auth.accessToken();
-  const withAuth = access ? req.clone({ url, setHeaders: { Authorization: `Bearer ${access}`}}) : req.clone({ url });
+  const withAuth = access && !isRefresh
+    ? req.clone({ url, setHeaders: { Authorization: `Bearer ${access}` } })
+    : req.clone({ url });
 
   return next(withAuth).pipe(
     catchError((err: unknown) => {
-      if (!(err instanceof HttpErrorResponse) || err.status !== 401) {
+      if (!(err instanceof HttpErrorResponse)) {
         return throwError(() => err);
       }
+
+      if (isRefresh) {
+        return throwError(() => err);
+      }
+
+      if (err.status !== 401) {
+        return throwError(() => err);
+      }
+
       if (req.context.get(RETRIED)) {
         auth.clear();
         return throwError(() => err);
@@ -34,14 +49,22 @@ export const baseHttpInterceptor: HttpInterceptorFn = (req, next) => {
         return throwError(() => err);
       }
 
-      return http.post<{ accessToken: string; refreshToken?: string}>(
-        `${apiBase}/auth/refresh`,
-        { refreshToken: refresh}
-      ).pipe(
+      if (!refreshShared$) {
+        refreshShared$ = http.post<{ accessToken: string; refreshToken?: string }>(
+          `${apiBase}/auth/refresh`,
+          { refreshToken: refresh },
+          { context: new HttpContext() }
+        ).pipe(
+          shareReplay(1),
+          finalize(() => { refreshShared$ = null; })
+        );
+      }
+
+      return refreshShared$.pipe(
         switchMap(tokens => {
           auth.setTokens(tokens.accessToken, tokens.refreshToken ?? refresh);
           const retried = withAuth.clone({
-            setHeaders: { Authorization: `Bearer ${tokens.accessToken}`},
+            setHeaders: { Authorization: `Bearer ${tokens.accessToken}` },
             context: req.context.set(RETRIED, true),
           });
           return next(retried);
@@ -50,7 +73,7 @@ export const baseHttpInterceptor: HttpInterceptorFn = (req, next) => {
           auth.clear();
           return throwError(() => refreshErr);
         })
-      )
+      );
     })
-  )
+  );
 };

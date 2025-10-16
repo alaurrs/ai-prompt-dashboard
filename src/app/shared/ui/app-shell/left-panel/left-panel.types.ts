@@ -1,8 +1,8 @@
 export type LeftPanelNavKey = 'threads' | 'prompts' | 'settings';
 
 export interface LeftPanelUser {
-  name: string;
   email: string;
+  name: string;
   avatarUrl?: string;
 }
 

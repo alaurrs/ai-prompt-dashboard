@@ -6,7 +6,6 @@
   <!-- LEFT SIDEBAR -->
   <div app-left>
     <app-left-panel
-      [user]="user"
       [nav]="nav()"
       [threads]="threadItems()"
       [selectedThreadId]="active()?.id"
@@ -18,14 +17,28 @@
 
   <!-- CENTER COLUMN -->
   <div app-center class="center-col">
-    <div class="messages">
+    <div class="messages"
+         appAutoScroll
+         [followWhileStreaming]="isStreaming || isWaitingFirstChunk()"
+         [bottomThreshold]="24"
+    >
       @if (active(); as thread) {
-        @for (message of thread.messages; track message.id) {
-          <div class="bubble" [class.user]="message.role === 'user'" [class.assistant]="message.role === 'assistant'">
-            <p>{{ message.content }}</p>
-          </div>
+        @for (message of thread.messages; track message.id; let last = $last) {
+          @if (message.role === 'assistant' && last && !message.content.trim() && isWaitingFirstChunk()) {
+
+          } @else {
+            <div class="bubble" [class.user]="message.role === 'user'" [class.assistant]="message.role === 'assistant'">
+              <p>{{ message.content }}</p>
+            </div>
+          }
         } @empty {
           <p class="muted">Start chatting...</p>
+        }
+        @if (isWaitingFirstChunk()) {
+          <div class="bubble assistant loading">
+            <i class="pi pi-spin pi-spinner"></i>
+            <span class="muted">Thinking in progress...</span>
+          </div>
         }
       } @else {
         <p class="muted">Select or create a conversation.</p>
@@ -64,6 +77,6 @@
 
   <!-- RIGHT PANEL -->
   <div app-right class="right-col">
-    <app-right-panel [open]="showPrompts()" (close)="showPrompts.set(false)" />
+    <app-right-panel [open]="showPrompts()" (close)="showPrompts.set(false)"/>
   </div>
 </app-shell>

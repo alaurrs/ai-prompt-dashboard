@@ -1,12 +1,15 @@
 <div class="lp-container">
   <!-- Profile header -->
-  <div class="profile">
-    <p-avatar [image]="user.avatarUrl" icon="pi pi-user" [styleClass]="'avatar'" shape="circle"></p-avatar>
-    <div class="profile-meta">
-      <div class="name" title="{{ user.name }}">{{ user.name }}</div>
-      <div class="email" title="{{ user.email }}">{{ user.email }}</div>
+  @if (user()) {
+    <div class="profile">
+      <p-avatar [image]="user()?.avatarUrl" [icon]="!user()?.avatarUrl ? 'pi pi-user' : undefined" [class]="'avatar'" shape="circle"></p-avatar>
+      <div class="profile-meta">
+        <div class="name" title="{{ user()?.name }}">{{ user()?.name }}</div>
+        <div class="email" title="{{ user()?.email }}">{{ user()?.email }}</div>
+      </div>
     </div>
-  </div>
+  }
+
 
   <!-- Search -->
   <div class="search relative">
