@@ -94,7 +94,9 @@ export class ChatPage {
   open(id: string) { this.chat.open(id); }
   stop() { this.chat.stop(); }
   send() {
-    if (this.busy() || !this.text.trim() || !this.active()) return;
+    if (!this.text.trim() || !this.active()) return;
+
+    if (this.busy()) this.chat.stop();
 
     const value = this.text.trim();
     if (!value) return;

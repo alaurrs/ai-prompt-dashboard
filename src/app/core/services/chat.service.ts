@@ -2,12 +2,11 @@ import {computed, Injectable, signal} from '@angular/core';
 import {ChatThread} from '../models/chat-thread.model';
 import {StorageService} from './storage.service';
 import {ChatMessage} from '../models/chat-message.model';
-import {ChatAdapter} from '../adapters/adapter.types';
-import {MockAdapter} from '../adapters/mock.adapter';
 import {ThreadDto, ThreadsAdapter} from '../adapters/threads.adapter';
 import {MessageDto, MessagesAdapter} from '../adapters/messages.adapter';
-import {AiSseAdapter} from '../adapters/ai-sse.adapter';
-import {first, firstValueFrom} from 'rxjs';
+import { AiStreamService } from './ai-stream.service';
+import { Subject, firstValueFrom } from 'rxjs';
+import { switchMap, tap, finalize } from 'rxjs/operators';
 
 function uid(): string {
   return crypto.randomUUID();
@@ -32,9 +31,10 @@ export class ChatService {
     private readonly storage: StorageService,
     private readonly threadsApi: ThreadsAdapter,
     private readonly messagesApi: MessagesAdapter,
-    private readonly aiSse: AiSseAdapter,
+    private readonly aiStream: AiStreamService,
   ) {
     this.bootstrap();
+    this.setupRespondPipeline();
   }
 
   private async bootstrap() {
@@ -113,55 +113,44 @@ export class ChatService {
     this.patchThread(threadId, this.toChatThread(dto));
   }
 
-  // ------- INTERNAL : STREAMING -------
-  private async streamAssistant(thread: ChatThread, prompt: string) {
-    const assistantLocalId = uid();
-    const assistant: ChatMessage = { id: assistantLocalId, role: 'assistant', content: '', createdAt: Date.now() };
-    this.appendMessage(thread.id, assistant);
-    this.streaming.set(true);
+  // ------- INTERNAL : STREAMING (RxJS switchMap for cancellation) -------
+  private readonly respondTrigger$ = new Subject<{ threadId: string; prompt: string; model: string; systemPrompt?: string }>();
 
-    const { stream, cancel } = this.aiSse.respond(thread.id, {
-      prompt,
-      model: thread.model,
-      systemPrompt: thread.systemPrompt ?? undefined,
-    });
-    this.cancelStreaming = cancel;
+  private setupRespondPipeline() {
+    this.respondTrigger$
+      .pipe(
+        switchMap(({ threadId, prompt, model, systemPrompt }) => {
+          const assistantLocalId = uid();
+          const assistant: ChatMessage = { id: assistantLocalId, role: 'assistant', content: '', createdAt: Date.now() };
+          this.appendMessage(threadId, assistant);
+          this.streaming.set(true);
+          this.waitingFirstChunk.set(true);
 
-    let firstChunkReceived = false;
+          const { stream$, stop } = this.aiStream.startRespond(threadId, { prompt, model, systemPrompt });
+          this.cancelStreaming = stop;
 
-    try {
-      const reader = stream.getReader();
-      let assistantServerId: string | null = null;
-
-      while (true) {
-        const { value, done } = await reader.read();
-        if (done) break;
-        if (!value) continue;
-
-        if (!firstChunkReceived) {
-          this.waitingFirstChunk.set(false);
-          firstChunkReceived = true;
-        }
-
-        if (value.type === 'created') {
-          assistantServerId = value.data ?? null;
-        } else if (value.type === 'token') {
-          this.mutateMessage(thread.id, assistantLocalId, prev => prev + value.data);
-        } else if (value.type === 'done') {
-          this.mutateMessage(thread.id, assistantLocalId, prev => prev);
-          this.streaming.set(false);
-        }
-      }
-    } catch (e: any) {
-      this.waitingFirstChunk.set(false);
-      const msg = (e?.data ?? e?.message ?? 'Stream error').toString();
-      this.mutateMessage(thread.id, assistantLocalId, prev => prev, msg);
-      this.streaming.set(false);
-    } finally {
-      this.cancelStreaming = null;
-      this.persistCache();
-      await this.hydrateMessages(thread.id);
-    }
+          let firstToken = true;
+          return stream$.pipe(
+            tap(ev => {
+              if (ev.type === 'token') {
+                if (firstToken) { this.waitingFirstChunk.set(false); firstToken = false; }
+                this.mutateMessage(threadId, assistantLocalId, prev => prev + (ev.data ?? ''));
+              } else if (ev.type === 'error') {
+                this.waitingFirstChunk.set(false);
+                this.mutateMessage(threadId, assistantLocalId, prev => prev, ev.data ?? 'error');
+              }
+            }),
+            finalize(() => {
+              try { stop(); } catch {}
+              this.cancelStreaming = null;
+              this.streaming.set(false);
+              this.persistCache();
+              this.hydrateMessages(threadId).catch(() => {});
+            })
+          );
+        })
+      )
+      .subscribe();
   }
 
   // ------ MESSAGE COMMANDS ------
@@ -180,8 +169,7 @@ export class ChatService {
     const userMsg = this.toChatMessage(userMsgDto!);
     this.appendMessage(thread.id, userMsg);
 
-    await this.streamAssistant(thread, trimmed);
-    this.waitingFirstChunk.set(false);
+    this.respondTrigger$.next({ threadId: thread.id, prompt: trimmed, model: thread.model, systemPrompt: thread.systemPrompt ?? undefined });
   }
 
   async retry(): Promise<void> {
@@ -189,7 +177,8 @@ export class ChatService {
     if (!thread || !thread.messages.length) return;
     const lastUser = [...thread.messages].reverse().find(m => m.role === 'user');
     if (!lastUser) return;
-    await this.streamAssistant(thread, lastUser.content);
+    this.waitingFirstChunk.set(true);
+    this.respondTrigger$.next({ threadId: thread.id, prompt: lastUser.content, model: thread.model, systemPrompt: thread.systemPrompt ?? undefined });
   }
 
   stop(): void {

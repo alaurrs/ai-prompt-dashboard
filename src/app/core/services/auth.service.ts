@@ -32,4 +32,6 @@ export class AuthService {
     this.state.set({ accessToken: null, refreshToken: null });
     localStorage.removeItem(AUTH_KEY);
   }
+
+  getAccessToken(): string | null { return this.accessToken(); }
 }

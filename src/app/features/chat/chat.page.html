@@ -57,20 +57,22 @@
       </textarea>
 
       <div class="actions">
-        <p-button
-          icon="pi pi-stop"
-          label="Stop"
-          [styleClass]="'btn'"
-          (onClick)="stop()"
-          [disabled]="!busy()">
-        </p-button>
-
-        <p-button
-          icon="pi pi-send"
-          [styleClass]="'btn btn-primary'"
-          (onClick)="send()"
-          [disabled]="busy() || !text.trim()">
-        </p-button>
+        @if (!isStreaming()) {
+          <p-button
+            icon="pi pi-send"
+            [styleClass]="'btn btn-primary'"
+            (onClick)="send()"
+            [disabled]="!text.trim()">
+          </p-button>
+        } @else {
+          <p-button
+            icon="pi pi-stop"
+            label="Stop"
+            [styleClass]="'btn'"
+            (onClick)="stop()"
+            [disabled]="!busy()">
+          </p-button>
+        }
       </div>
     </div>
   </div>
