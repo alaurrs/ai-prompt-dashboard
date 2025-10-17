@@ -15,3 +15,114 @@
 @use './components/_checkbox.scss';
 @use './components/_list.scss';
 @use './components/_bubble.scss';
+
+.btn,
+.btn button,
+.btn .p-button {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1 !important;
+  gap: 0 !important;
+  font-weight: 600 !important;
+  user-select: none !important;
+  height: 38px !important;
+  padding: 0 14px !important;
+  border-radius: var(--radius) !important;
+  border: 1px solid transparent !important;
+  background: var(--surface) !important;
+  color: var(--text) !important;
+  transition: background .15s, border-color .15s, box-shadow .15s, transform .02s !important;
+  box-shadow: none !important;
+}
+.btn:hover:not(:disabled),
+.btn button:hover:not(:disabled),
+.btn .p-button:hover:not(:disabled) {
+  background: color-mix(in hsl, var(--surface), black 4%) !important;
+}
+.btn:active,
+.btn button:active,
+.btn .p-button:active {
+  transform: translateY(1px) !important;
+}
+.btn:disabled,
+.btn button:disabled,
+.btn .p-button:disabled {
+  opacity: 0.6 !important;
+  cursor: not-allowed !important;
+}
+
+.btn .p-button-icon,
+.btn .p-button-icon-left,
+.btn .p-button-icon-right {
+  margin: 0 !important; 
+  font-size: 1.1rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.btn .p-button-label {
+  display: none !important;
+}
+
+/* Primary button */
+.btn-primary,
+.btn-primary button,
+.btn-primary .p-button {
+  background: var(--primary) !important;
+  color: white !important;
+}
+.btn-primary:hover:not(:disabled),
+.btn-primary button:hover:not(:disabled),
+.btn-primary .p-button:hover:not(:disabled) {
+  background: var(--primary-600) !important;
+}
+.btn-primary:active,
+.btn-primary button:active,
+.btn-primary .p-button:active {
+  background: var(--primary-700) !important;
+  transform: translateY(1px) !important;
+}
+
+/* Stop button: square icon-only with black hover */
+.stop-btn .p-button-icon {
+  margin-right: 0 !important;
+  font-size: 1rem !important;
+}
+
+.stop-btn,
+.stop-btn button,
+.stop-btn .p-button {
+  background: transparent !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text) !important;
+  width: 44px !important;
+  height: 44px !important;
+  padding: 0 !important;
+  border-radius: 12px !important;
+}
+
+.stop-btn .p-button-label {
+  display: none !important;
+}
+
+.stop-btn:hover:not(:disabled),
+.stop-btn button:hover:not(:disabled),
+.stop-btn .p-button:hover:not(:disabled) {
+  background: #000 !important;
+  border-color: #000 !important;
+  color: #fff !important;
+  transform: translateY(-1px) !important;
+}
+.stop-btn:active,
+.stop-btn button:active,
+.stop-btn .p-button:active {
+  transform: translateY(0) !important;
+}
+.stop-btn:disabled,
+.stop-btn button:disabled,
+.stop-btn .p-button:disabled {
+  opacity: 0.6 !important;
+  cursor: not-allowed !important;
+}

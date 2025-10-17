@@ -10,7 +10,6 @@ export class AuthFetchService {
   private readonly http = inject(HttpClient);
   private readonly apiBase = environment.apiBase.replace(/\/$/, '');
 
-  // Single-flight promise for refresh to dedupe concurrent 401s
   private refreshing: Promise<{ accessToken: string; refreshToken?: string }> | null = null;
 
   async fetch(input: string, init: RequestInit = {}, retryOnce = true): Promise<Response> {

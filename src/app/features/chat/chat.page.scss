@@ -153,16 +153,101 @@
 .w-full { width:100%; }
 .rounded-full { border-radius:999px; }
 
-::ng-deep {
-  .btn .p-button-icon {
-    margin-right: 8px;
-  }
+/* Override PrimeNG button styles to match design system */
+.actions {
+  ::ng-deep {
+    /* Send button - primary style */
+    .btn-primary {
+      button,
+      .p-button {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        height: 44px !important;
+        width: 44px !important;
+        min-width: 44px !important;
+        padding: 0 !important;
+        border-radius: 12px !important;
+        border: none !important;
+        background: hsl(22 85% 54%) !important;
+        color: white !important;
+        box-shadow: none !important;
+        transition: all .15s ease !important;
+        cursor: pointer !important;
 
-  .btn .p-button-label {
-    flex: 1;
-  }
+        &:hover:not(:disabled) {
+          background: hsl(22 82% 46%) !important;
+        }
 
-  .list-item .p-button-icon {
-    margin-right: 0;
+        &:active {
+          background: hsl(22 78% 40%) !important;
+          transform: translateY(1px) !important;
+        }
+
+        &:disabled {
+          opacity: 0.6 !important;
+          cursor: not-allowed !important;
+        }
+      }
+
+      i,
+      .p-button-icon {
+        font-size: 1.1rem !important;
+        margin: 0 !important;
+      }
+
+      span:not(.p-button-icon),
+      .p-button-label {
+        display: none !important;
+      }
+    }
+
+    /* Stop button - ghost style with black hover */
+    .stop-btn {
+      button,
+      .p-button {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        height: 44px !important;
+        width: 44px !important;
+        min-width: 44px !important;
+        padding: 0 !important;
+        border-radius: 12px !important;
+        border: 1px solid hsl(0 0% 88%) !important;
+        background: transparent !important;
+        color: hsl(223 16% 12%) !important;
+        box-shadow: none !important;
+        transition: all .15s ease !important;
+        cursor: pointer !important;
+
+        &:hover:not(:disabled) {
+          background: #000 !important;
+          border-color: #000 !important;
+          color: #fff !important;
+          transform: translateY(-1px) !important;
+        }
+
+        &:active {
+          transform: translateY(0) !important;
+        }
+
+        &:disabled {
+          opacity: 0.6 !important;
+          cursor: not-allowed !important;
+        }
+      }
+
+      i,
+      .p-button-icon {
+        font-size: 1rem !important;
+        margin: 0 !important;
+      }
+
+      span:not(.p-button-icon),
+      .p-button-label {
+        display: none !important;
+      }
+    }
   }
 }

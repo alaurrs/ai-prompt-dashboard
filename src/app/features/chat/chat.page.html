@@ -59,7 +59,7 @@
       <div class="actions">
         @if (!isStreaming()) {
           <p-button
-            icon="pi pi-send"
+            icon="pi pi-arrow-up"
             [styleClass]="'btn btn-primary'"
             (onClick)="send()"
             [disabled]="!text.trim()">
@@ -67,8 +67,7 @@
         } @else {
           <p-button
             icon="pi pi-stop"
-            label="Stop"
-            [styleClass]="'btn'"
+            [styleClass]="'btn stop-btn'"
             (onClick)="stop()"
             [disabled]="!busy()">
           </p-button>
