@@ -16,6 +16,8 @@
 @use './components/_list.scss';
 @use './components/_bubble.scss';
 
+/* Component styles with @apply should be plain CSS or managed locally */
+
 .btn,
 .btn button,
 .btn .p-button {
@@ -55,7 +57,7 @@
 .btn .p-button-icon,
 .btn .p-button-icon-left,
 .btn .p-button-icon-right {
-  margin: 0 !important; 
+  margin: 0 !important;
   font-size: 1.1rem !important;
   display: inline-flex !important;
   align-items: center !important;

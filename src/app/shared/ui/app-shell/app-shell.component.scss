@@ -20,7 +20,7 @@
 }
 .shell.no-right { grid-template-columns: 280px 1fr; }
 .left  { border-right: 1px solid var(--border); overflow: auto; }
-.main  { overflow: hidden; display: flex; flex-direction: column; }
+.main  { overflow: hidden; display: flex; flex-direction: column; min-height: 0; }
 .right { border-left: 1px solid var(--border); overflow: auto; }
 .shell.no-right .right { display: none; }
 

@@ -1,0 +1,101 @@
+.composer-floating {
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  pointer-events: none;
+  padding: 8px 16px 10px;
+  background: transparent;
+}
+
+.composer-floating::before {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: 0; top: -20px;
+  background: linear-gradient(
+    to top,
+    color-mix(in hsl, var(--bg), transparent 15%) 40%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.composer-pill {
+  position: relative;
+  z-index: 1;
+  pointer-events: auto;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 780px;
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--surface, #fff);
+  border: 1px solid var(--border, rgba(0,0,0,.1));
+  border-radius: 24px;
+  box-shadow: 0 6px 24px rgba(0,0,0,.08), 0 2px 8px rgba(0,0,0,.05);
+}
+
+.composer-pill :where(.btn, .stop-btn),
+.composer-pill :where(.btn, .stop-btn) button,
+.composer-pill :where(.btn, .stop-btn) .p-button {
+  width: 44px !important;
+  height: 44px !important;
+  min-width: 44px !important;
+  padding: 0 !important;
+  border-radius: 999px !important;
+}
+
+.ta {
+  flex: 1 1 auto;
+  min-height: 40px;
+  /* Height is set inline by autosize(); keep overflow hidden until cap */
+  overflow-y: hidden;
+  background: transparent;
+  border: 0;
+  outline: none;
+  resize: none;
+  color: var(--text);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  padding: 8px 10px;
+  border-radius: 12px;
+  overflow-wrap: anywhere;
+}
+.ta::placeholder { color: var(--text-muted); }
+
+.icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  transition: background .15s, color .15s, transform .02s, border-color .15s;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+.icon.ghost {
+  color: var(--text-muted);
+  background: transparent;
+}
+.icon.ghost:hover {
+  background: color-mix(in hsl, var(--surface), black 4%);
+  color: var(--text);
+}
+.icon.primary {
+  background: hsl(22 85% 54%);
+  color: #fff;
+  border: none;
+}
+.icon.primary:hover { background: hsl(22 82% 46%); }
+.icon:disabled { opacity: .6; cursor: not-allowed; }
+
+.composer-pill:focus-within {
+  outline: none;
+  box-shadow: 0 0 0 4px color-mix(in hsl, var(--primary), transparent 90%), 0 6px 24px rgba(0,0,0,.08), 0 2px 8px rgba(0,0,0,.05);
+  border-color: color-mix(in hsl, var(--primary), transparent 60%);
+}
+

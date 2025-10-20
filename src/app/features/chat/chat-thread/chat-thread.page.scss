@@ -1,0 +1,25 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.messages {
+  flex: 1 1 auto;
+  overflow: auto;
+  padding: 16px 24px; /* bottom padding is set inline from composer height */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  scroll-behavior: smooth;
+  min-height: 0;
+}
+
+.composer {
+  border-top: 1px solid var(--border);
+  padding: var(--sp-4) var(--sp-5);
+  display: grid;
+  gap: var(--sp-3);
+  background: var(--surface);
+}

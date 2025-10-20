@@ -1,0 +1,26 @@
+<app-shell [rightOpen]="showPrompts()">
+  <!-- HEADER -->
+  <div app-header-actions></div>
+
+  <!-- LEFT SIDEBAR -->
+  <div app-left>
+    <app-left-panel
+      [nav]="nav()"
+      [threads]="threadItems()"
+      [selectedThreadId]="activeThreadId()"
+      (newChat)="newThread()"
+      (openThread)="open($event)"
+      (selectNav)="onSelectNav($event)"
+      (search)="onSearch($event)"/>
+  </div>
+
+  <!-- CENTER COLUMN -->
+  <div app-center class="center-col">
+    <router-outlet />
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div app-right class="right-col">
+    <app-right-panel [open]="showPrompts()" (close)="showPrompts.set(false)"/>
+  </div>
+</app-shell>

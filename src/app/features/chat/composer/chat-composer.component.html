@@ -1,0 +1,68 @@
+<div class="composer-floating">
+
+  <div class="composer-pill" #pill>
+
+    <!-- Bouton gauche (+) -->
+
+    <button class="icon ghost" type="button" title="Actions">
+
+      <i class="pi pi-plus"></i>
+
+    </button>
+
+
+    <!-- Zone de saisie -->
+
+    <textarea
+
+      #ta
+
+      [(ngModel)]="text"
+
+      rows="1"
+
+      placeholder="Type your message..."
+
+      class="ta"
+
+      (input)="onInput()"
+
+      (keydown)="onKeydown($event)">
+
+    ></textarea>
+
+
+    <!-- Bouton droite: send ou stop selon streaming -->
+
+    @if (!streaming) {
+      <p-button
+        [styleClass]="'btn btn-primary'"
+        icon="pi pi-arrow-up"
+        title="Send"
+        (onClick)="onSend()"
+        [disabled]="!text.trim()"
+      ></p-button>
+    } @else {
+
+      <p-button
+
+        [styleClass]="'stop-btn'"
+
+        icon="pi pi-stop"
+
+        title="Stop"
+
+        (onClick)="onStop()"
+
+      ></p-button>
+
+    }
+
+
+  </div>
+
+</div>
+
+
+
+
