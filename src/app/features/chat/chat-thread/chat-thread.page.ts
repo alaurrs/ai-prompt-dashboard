@@ -13,7 +13,7 @@ import {ChatComposerComponent} from '../composer/chat-composer.component';
   selector: 'app-chat-thread',
   templateUrl: './chat-thread.page.html',
   styleUrl: './chat-thread.page.scss',
-  imports: [FormsModule, Textarea, Button, AutoScrollDirective, ChatComposerComponent],
+  imports: [FormsModule, AutoScrollDirective, ChatComposerComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChatThreadPage {

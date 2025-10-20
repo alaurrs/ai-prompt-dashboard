@@ -1,0 +1,84 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+  width: 100%;
+}
+
+:host h1 { text-align: center; font-weight: 700; }
+
+:host .text-animated {
+
+  display: block;
+  width: fit-content;
+  margin: 0 auto;
+  text-align: center;
+
+  font-size: clamp(1.65rem, 3.6vw, 2.85rem);
+  line-height: 1.1;
+  font-weight: 800;
+
+  background-image:
+    linear-gradient(
+      to right,
+      transparent 0%,
+      transparent 35%,
+      #5ca55c 40%,
+      #fbbc05 48.8%,
+      #ea4335 50.6%,
+      transparent 60%,
+      transparent 100%
+    ),
+    linear-gradient(hsl(22 85% 54%), hsl(22 85% 54%));
+  background-size: 1000px 100%, auto;
+  background-position: 0 0, 0 0;
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+
+  -webkit-mask-image: none;
+  mask-image: none;
+
+  animation: text-sweep 2.6s ease-in-out infinite both;
+}
+
+@keyframes text-sweep {
+  0%   { background-position: -1000px 0, 0 0; }
+  70%  { background-position: 0 0, 0 0; }
+  100% { background-position: 0 0, 0 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :host .text-animated {
+    animation: none;
+    background-position: 0 0, 0 0;
+  }
+}
+
+:host ::ng-deep .composer-floating {
+  position: static !important;
+  bottom: auto !important;
+  padding: 0 !important;
+  background: transparent !important;
+  width: 100% !important;
+}
+
+:host ::ng-deep .composer-floating::before {
+  display: none !important;
+}
+
+:host .composer-container {
+  width: 100%;
+  align-self: stretch;
+  padding-left: 25% !important;
+  padding-right: 25% !important;
+  margin-top: clamp(24px, 4vh, 80px) !important;
+}
+:host ::ng-deep .composer-pill { max-width: none !important; margin: 0 !important; width: 100% !important; }
+
+:host ::ng-deep app-chat-composer { display: block; width: 100% !important; }

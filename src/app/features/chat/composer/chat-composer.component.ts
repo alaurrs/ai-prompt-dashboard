@@ -65,7 +65,6 @@ export class ChatComposerComponent implements AfterViewInit {
     const next = Math.min(el.scrollHeight, max);
     el.style.height = next + 'px';
     el.style.overflowY = el.scrollHeight > max ? 'auto' : 'hidden';
-    // Emit current pill height so parent can reserve space
     if (this.pill?.nativeElement) {
       const h = this.pill.nativeElement.getBoundingClientRect().height;
       this.heightChange.emit(Math.round(h));

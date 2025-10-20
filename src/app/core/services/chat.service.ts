@@ -61,12 +61,13 @@ export class ChatService {
   }
 
   // --------- THREAD COMMANDS ----------
-  async newThread(title = 'New conversation', providerId: ChatThread['providerId'] = 'mock', model = 'gpt-5-nano'): Promise<void> {
+  async newThread(title = 'New conversation', providerId: ChatThread['providerId'] = 'mock', model = 'gpt-5-nano'): Promise<string> {
     const dto = await firstValueFrom(this.threadsApi.create({ title, model }));
     const thread = this.toChatThread(dto!);
     this.threads.set([thread, ...this.threads()]);
     this.activeId.set(thread.id);
     this.persistCache();
+    return thread.id;
   }
 
 

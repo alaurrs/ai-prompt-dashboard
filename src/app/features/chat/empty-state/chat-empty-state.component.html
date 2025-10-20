@@ -1,19 +1,10 @@
-<!-- features/chat/empty-state/chat-empty-state.component.html -->
-<section class="h-full grid place-items-center p-6">
-  <div class="max-w-3xl w-full text-center space-y-8">
-    <h1 class="text-3xl md:text-4xl font-semibold">Qu’est-ce qui vous intéresse aujourd’hui ?</h1>
+<section class="h-full w-full flex flex-col justify-center items-center gap-20 py-6">
+  <div class="max-w-3xl w-full mx-auto text-center space-y-8">
+    <h1 class="text-3xl md:text-4xl font-bold text-center text-animated">Bonjour {{ displayName() }} !</h1>
 
-    <div class="rounded-2xl shadow-md border p-2 flex items-center gap-2">
-      <i class="pi pi-plus text-lg opacity-60"></i>
-      <input pInputText class="flex-1 border-0 outline-none bg-transparent"
-             placeholder="Poser une question" [(ngModel)]="draft"
-             (keydown.enter)="startNewChat()" />
-      <button pButton icon="pi pi-microphone" class="p-button-text"></button>
-      <button pButton icon="pi pi-wave-pulse" class="p-button-text"></button>
-    </div>
+  </div>
 
-    <div class="flex justify-center gap-3">
-      <button pButton label="Nouveau chat" icon="pi pi-send" (click)="startNewChat()"></button>
-    </div>
+  <div class="composer-container w-full px-8 md:px-12 lg:px-20 mt-10">
+    <app-chat-composer (send)="sendFromComposer($event)" />
   </div>
 </section>
