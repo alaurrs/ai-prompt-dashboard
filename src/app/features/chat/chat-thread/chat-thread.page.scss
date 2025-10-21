@@ -5,6 +5,12 @@
   min-height: 0;
 }
 
+.thread-header { display: flex; align-items: center; gap: 8px; padding: 8px 16px 0; }
+.thread-title { margin: 0; font-size: 1.05rem; font-weight: 700; letter-spacing: -.01em; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.thread-title-badge { font-size: .7rem; padding: 3px 8px; border-radius: 999px; line-height: 1; border: 1px solid var(--border); color: var(--text-muted); }
+.thread-title-badge.ai { background: color-mix(in hsl, var(--primary), transparent 85%); color: var(--primary); border-color: color-mix(in hsl, var(--primary), transparent 70%); }
+.thread-title-badge.user { background: color-mix(in hsl, var(--success, #10b981), transparent 85%); color: var(--success, #10b981); border-color: color-mix(in hsl, var(--success, #10b981), transparent 70%); }
+
 .messages {
   flex: 1 1 auto;
   overflow: auto;

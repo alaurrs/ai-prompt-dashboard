@@ -59,6 +59,10 @@ Streaming endpoint (`respond`) sends SSE events:
 
 Client code handling this lives in `src/app/core/adapters/ai-sse.adapter.ts` and `src/app/core/services/chat.service.ts`.
 
+### Realtime thread title updates (SSE)
+
+The app subscribes to an authenticated SSE channel at `/events` to receive `thread.title_updated` events and update the UI in realtime. See `docs/sse.md` for details.
+
 ## Scripts
 
 From `package.json`:

@@ -70,6 +70,8 @@ export class ChatService {
     return thread.id;
   }
 
+  // Deprecated signature previously suggested without title; use the above with defaults
+
 
   async open(threadId: string): Promise<void> {
     let local = this.threadById(threadId);
@@ -231,6 +233,26 @@ export class ChatService {
     this.storage.saveThreads(this.threads());
   }
 
+  clearActiveSelection(): void {
+    this.activeId.set(null);
+  }
+
+  async createThreadWithMessage(content: string, model = 'gpt-5-nano', systemPrompt?: string): Promise<string> {
+    const dto = await firstValueFrom(this.threadsApi.createWithMessage({ content, model, systemPrompt }));
+    const thread = this.toChatThread(dto!);
+    this.threads.set([thread, ...this.threads()]);
+    this.activeId.set(thread.id);
+    this.persistCache();
+
+    const userLocal: ChatMessage = { id: uid(), role: 'user', content, createdAt: Date.now() };
+    this.appendMessage(thread.id, userLocal);
+
+    this.waitingFirstChunk.set(true);
+    this.respondTrigger$.next({ threadId: thread.id, prompt: content, model: thread.model, systemPrompt: thread.systemPrompt ?? undefined });
+
+    return thread.id;
+  }
+
   // ------- HELPERS -------
   private async hydrateMessages(threadId: string) {
     const list = await firstValueFrom(this.messagesApi.list(threadId, {afterPosition: -1, limit: 200}));
@@ -249,6 +271,7 @@ export class ChatService {
   private toChatThread = (dto: ThreadDto): ChatThread => ({
     id: dto.id,
     title: dto.title ?? 'Untitled',
+    titleSource: undefined,
     providerId: 'server',
     model: dto.model ?? 'gpt-5-nano',
     systemPrompt: dto.systemPrompt ?? undefined,
@@ -257,4 +280,24 @@ export class ChatService {
     updatedAt: new Date(dto.updatedAt).getTime(),
     version: dto.version as any,
   });
+
+  // ------- SSE INTEGRATION: title updates -------
+  applyTitleUpdateFromSse(payload: { threadId: string; title: string; titleSource: 'ai'|'user'; updatedAtIso: string }): void {
+    const t = this.threadById(payload.threadId);
+    if (!t) return;
+
+    const incomingTs = new Date(payload.updatedAtIso).getTime();
+    if (t.updatedAt === incomingTs && t.title === payload.title && t.titleSource === payload.titleSource) {
+      return;
+    }
+
+    const updated = this.threads().map(th => th.id === payload.threadId
+      ? { ...th, title: payload.title, titleSource: payload.titleSource, updatedAt: incomingTs }
+      : th
+    );
+
+    updated.sort((a, b) => (b.updatedAt ?? 0) - (a.updatedAt ?? 0));
+    this.threads.set(updated);
+    this.persistCache();
+  }
 }

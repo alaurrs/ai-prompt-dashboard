@@ -28,6 +28,12 @@ export class ThreadsAdapter {
     return this.http.post<ThreadDto>('/threads', body);
   }
 
+  createWithMessage(body: { content: string; model?: string; systemPrompt?: string }) {
+    return this.http.post<ThreadDto>('/threads/with-message', body);
+  }
+
+
+
   list(params?: {limit?: number; cursor?: string}) {
     let p = new HttpParams();
     if (params?.limit) p = p.set('limit', params.limit);

@@ -10,6 +10,10 @@
 }
 .brand { font-weight: 700; letter-spacing: -.01em; }
 .actions { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+.sse-indicator { width: 10px; height: 10px; border-radius: 999px; display: inline-block; border: 1px solid var(--border); background: var(--muted); }
+.sse-indicator.connected { background: #22c55e; border-color: color-mix(in hsl, #22c55e, black 20%); }
+.sse-indicator.connecting, .sse-indicator.reconnecting { background: #f59e0b; border-color: color-mix(in hsl, #f59e0b, black 20%); }
+.sse-indicator.disconnected { background: #ef4444; border-color: color-mix(in hsl, #ef4444, black 20%); }
 
 /* 3 columns */
 .shell {

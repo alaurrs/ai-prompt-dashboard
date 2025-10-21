@@ -45,18 +45,13 @@
 
   <!-- Thread list -->
   <div class="threads">
+    <div class="title">Recent Conversations</div>
     @for (t of threads; track t.id) {
       <button type="button" class="thread-item" [class.active]="t.id === selectedThreadId" (click)="onOpenThread(t.id)">
-        <span class="msg-icon" [class.unread]="t.unread">
-          <i class="pi pi-comments" aria-hidden="true"></i>
-        </span>
-
         <div class="texts">
           <div class="row">
-            <div class="title" title="{{ t.title }}">{{ t.title }}</div>
-            <div class="time" *ngIf="t.updatedAt as ts">{{ ts | date: 'shortTime' }}</div>
+            <div title="{{ t.title }}">{{ t.title }}</div>
           </div>
-          <div class="snippet" title="{{ t.snippet }}">{{ t.snippet }}</div>
         </div>
       </button>
     } @empty {

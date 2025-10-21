@@ -1,3 +1,12 @@
+@if (active(); as thread) {
+  <div class="thread-header">
+    <h2 class="thread-title" title="{{ thread.title }}">{{ thread.title }}</h2>
+    @if (thread.titleSource) {
+      <span class="thread-title-badge" [class.ai]="thread.titleSource==='ai'" [class.user]="thread.titleSource==='user'">{{ thread.titleSource === 'ai' ? 'AI' : 'You' }}</span>
+    }
+  </div>
+}
+
 <div class="messages"
      appAutoScroll
      [followWhileStreaming]="followWhileStreaming"

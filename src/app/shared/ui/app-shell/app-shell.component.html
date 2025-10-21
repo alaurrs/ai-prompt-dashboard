@@ -1,6 +1,7 @@
 <p-toolbar class="topbar">
   <div class="brand">AI Prompt Dashboard</div>
   <div class="actions">
+    <span [class]="sseClass()" title="SSE: {{ sseStatus() }}"></span>
     <p-button
       [styleClass]="'btn btn-ghost'"
       [icon]="theme.icon()"

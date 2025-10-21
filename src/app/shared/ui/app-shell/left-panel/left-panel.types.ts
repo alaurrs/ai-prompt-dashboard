@@ -9,15 +9,16 @@ export interface LeftPanelUser {
 export interface LeftPanelNavItem {
   key: LeftPanelNavKey;
   label: string;
-  icon: string; // e.g., 'pi pi-comments'
+  icon: string;
   active?: boolean;
 }
 
 export interface LeftPanelThreadItem {
   id: string;
   title: string;
+  titleSource?: 'ai' | 'user';
   snippet?: string;
-  updatedAt?: number | string; // epoch ms or preformatted string
+  updatedAt?: number | string;
   unread?: boolean;
   avatarUrl?: string;
 }

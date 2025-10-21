@@ -26,12 +26,14 @@ export class ChatEmptyStateComponent {
     return user?.displayName;
   })
 
+  constructor() {
+    this.chat.clearActiveSelection();
+  }
+
   async sendFromComposer(value: string) {
     const text = value?.trim();
     if (!text) return;
-    const id1 = await this.chat.newThread('New conversation');
-    await this.chat.sendUserMessage(text);
-    const id = this.chat.active()?.id ?? id1;
+    const id = await this.chat.createThreadWithMessage(text);
     if (id) this.router.navigate(['/', id]).catch(() => {});
   }
 }

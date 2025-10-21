@@ -53,7 +53,7 @@ export class ChatShellPage {
     });
     return filtered.map(t => {
       const last = t.messages[t.messages.length - 1];
-      return { id: t.id, title: t.title, snippet: last?.content, updatedAt: t.updatedAt, unread: false };
+      return { id: t.id, title: t.title, titleSource: t.titleSource, snippet: last?.content, updatedAt: t.updatedAt, unread: false };
     });
   });
 
@@ -64,8 +64,9 @@ export class ChatShellPage {
 
   // Actions
   async newThread() {
-    const id = await this.chat.newThread(); // ➜ retourne l'id (voir §4)
-    this.router.navigate(['/', id]).catch(() => {});
+    // Deselect current and redirect to empty-state route
+    this.chat.clearActiveSelection();
+    this.router.navigateByUrl('/').catch(() => {});
   }
   open(id: string) {
     this.router.navigate(['/', id]).catch(() => {});

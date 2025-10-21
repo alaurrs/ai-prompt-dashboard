@@ -90,7 +90,10 @@ export class ChatPage {
 
   readonly isStreaming = computed(() => this.chat.streaming());
 
-  newThread() { this.chat.newThread(); }
+  newThread() {
+    this.chat.clearActiveSelection();
+    this.router.navigateByUrl('/').catch(() => {});
+  }
   open(id: string) { this.chat.open(id); }
   stop() { this.chat.stop(); }
   send() {
